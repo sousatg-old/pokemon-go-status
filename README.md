@@ -13,4 +13,5 @@ color code:
 ## Credit
 
 The original app for MacOS made by [Lacsap-](https://github.com/Lacsap-/pokemon-go-status)
+
 The pokeball status icons were made by: [omgomg](https://github.com/omgmog)
