@@ -34,9 +34,10 @@ class PokemonGoIndicator:
 		gtk.main()
 
 	def set_icon(self, icon_path):
-		self.icon = os.path.abspath( icon_path )
+		self.icon = os.path.dirname(os.path.realpath(__file__)) + '/' + icon_path
 
 	def get_icon(self):
+		print self.icon
 		return self.icon
 
 	def quit(self, source):
