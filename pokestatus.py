@@ -53,12 +53,13 @@ class PokemonGoIndicator:
 		except:
 			status = False
 
-		if status == 'Online!':
-			self.set_icon( 'icons/w/pokeok.png' )
-		elif status == 'Unstable!':
-			self.set_icon( 'icons/w/pokeunstable.png' )
-		elif status == 'Offline!':
-			self.set_icon( 'icons/w/pokedown.png' )
+		ICONS = {
+			"Online!": 'icons/w/pokeok.png',
+			"Unstable!": 'icons/w/pokeunstable.png',
+			"Offline!": 'icons/w/pokedown.png'
+		}
+
+		self.set_icon(ICONS[status])
 
 		self.change_app_icon()
 
