@@ -10,6 +10,8 @@ color code:
 - orange: server unstable
 - red: server down
 
+Install `python-gi` with `sudo apt-get install python-gi`
+
 ## Credit
 
 The original app for MacOS made by [Lacsap-](https://github.com/Lacsap-/pokemon-go-status)
