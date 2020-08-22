@@ -1,17 +1,40 @@
+import signal, os
+import thread
+import requests
+import gi
+
+gi.require_version('Gtk', '3.0')
+gi.require_version('AppIndicator3', '0.1')
+
+from bs4 import BeautifulSoup
 from gi.repository import Gtk as gtk
 from gi.repository import AppIndicator3 as appindicator
 from gi.repository import GObject as gobject
 
-from bs4 import BeautifulSoup
+BASE_PATH = os.path.dirname(os.path.realpath(__file__))
+POKE_ONLINE = BASE_PATH + '/icons/w/pokeok.png'
+POKE_OFFLINE = BASE_PATH + '/icons/w/pokedown.png'
+POKE_UNSTABLE = BASE_PATH + '/icons/w/pokeunstable.png'
 
-import signal, os
-import thread
-import requests
+
+def get_pokengo_server_status():
+	URL = 'http://cmmcd.com/PokemonGo/'
+
+	try:
+		r = requests.get( URL )
+
+		if r.status_code != 200:
+			return "Online!"
+
+		soup = BeautifulSoup( r.text, 'html.parser' )
+		return soup.body.header.h2.font.text
+	except:
+		status = "Online!"
 
 class PokemonGoIndicator:
 	APPINDICATOR_ID = 'myappindicator'
 	indicator = None
-	icon = 'icons/w/pokedown.png'
+	icon = POKE_OFFLINE
 
 	def __init__(self, indicator_id='myappindicator'):
 		self.APPINDICATOR_ID = indicator_id
@@ -21,9 +44,12 @@ class PokemonGoIndicator:
 
 		# Set Menu
 		menu = gtk.Menu()
+
 		item_quit = gtk.MenuItem('Quit')
 		item_quit.connect('activate', self.quit)
+
 		menu.show_all()
+
 		self.indicator.set_menu( menu )
 
 
@@ -44,14 +70,7 @@ class PokemonGoIndicator:
 		gtk.main_quit()
 
 	def update_server_status_icon(self):
-		URL = 'http://cmmcd.com/PokemonGo/'
-
-		try:
-			r = requests.get( URL )
-			soup = BeautifulSoup( r.text, 'html.parser' )
-			status = soup.body.header.h2.font.text
-		except:
-			status = False
+		status = get_pokengo_server_status()
 
 		ICONS = {
 			"Online!": 'icons/w/pokeok.png',
@@ -59,12 +78,7 @@ class PokemonGoIndicator:
 			"Offline!": 'icons/w/pokedown.png'
 		}
 
-		self.set_icon(ICONS[status])
-
-		self.change_app_icon()
-
-	def change_app_icon(self):
-		self.indicator.set_icon( self.get_icon() )
+		self.indicator.set_icon( ICONS[status] )
 		gobject.timeout_add_seconds( 60, self.update_server_status_icon )
 
 if __name__ == '__main__':
