@@ -73,9 +73,9 @@ class PokemonGoIndicator:
 		status = get_pokengo_server_status()
 
 		ICONS = {
-			"Online!": 'icons/w/pokeok.png',
-			"Unstable!": 'icons/w/pokeunstable.png',
-			"Offline!": 'icons/w/pokedown.png'
+			"Online!": POKE_ONLINE,
+			"Unstable!": POKE_UNSTABLE,
+			"Offline!": POKE_OFFLINE
 		}
 
 		self.indicator.set_icon( ICONS[status] )
