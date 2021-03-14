@@ -1,12 +1,11 @@
 import signal, os
 import thread
-import requests
 import gi
 
 gi.require_version('Gtk', '3.0')
 gi.require_version('AppIndicator3', '0.1')
 
-from bs4 import BeautifulSoup
+from PokemonGoClient import get_pokengo_server_status
 from gi.repository import Gtk as gtk
 from gi.repository import AppIndicator3 as appindicator
 from gi.repository import GObject as gobject
@@ -16,20 +15,6 @@ POKE_ONLINE = BASE_PATH + '/icons/w/pokeok.png'
 POKE_OFFLINE = BASE_PATH + '/icons/w/pokedown.png'
 POKE_UNSTABLE = BASE_PATH + '/icons/w/pokeunstable.png'
 
-
-def get_pokengo_server_status():
-	URL = 'http://cmmcd.com/PokemonGo/'
-
-	try:
-		r = requests.get( URL )
-
-		if r.status_code != 200:
-			return "Online!"
-
-		soup = BeautifulSoup( r.text, 'html.parser' )
-		return soup.body.header.h2.font.text
-	except:
-		status = "Online!"
 
 class PokemonGoIndicator:
 	APPINDICATOR_ID = 'myappindicator'
